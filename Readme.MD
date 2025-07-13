@@ -115,11 +115,6 @@ UPDATE registrations SET status='approved' WHERE id=123456789;
 DELETE FROM registrations WHERE id=123456789;
 ```
 
----
-
-## ✨ Screenshots
-
-> _Add screenshots of your UI here for extra flair!_
 
 ---
 
