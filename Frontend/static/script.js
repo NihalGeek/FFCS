@@ -132,19 +132,26 @@ function resetForm() {
 
 function toggleMode() {
     isAdminMode = !isAdminMode;
-    const studentMode = document.getElementById('studentMode');
     const adminMode = document.getElementById('adminMode');
     const toggleBtn = document.querySelector('.toggle-btn');
     
     if (isAdminMode) {
-        studentMode.style.display = 'none';
         adminMode.style.display = 'block';
-        toggleBtn.textContent = 'Switch to Student Mode';
+        toggleBtn.textContent = '← Back to Student Mode';
         loadPendingRegistrations();
+        
+        // Add fade-in effect
+        setTimeout(() => {
+            adminMode.style.opacity = '1';
+            adminMode.style.transform = 'translateY(0)';
+        }, 10);
     } else {
-        studentMode.style.display = 'block';
-        adminMode.style.display = 'none';
-        toggleBtn.textContent = 'Switch to Admin Mode';
+        adminMode.style.opacity = '0';
+        adminMode.style.transform = 'translateY(20px)';
+        setTimeout(() => {
+            adminMode.style.display = 'none';
+        }, 300);
+        toggleBtn.textContent = 'Open Admin Panel →';
     }
 }
 
@@ -174,15 +181,21 @@ function loadPendingRegistrations() {
                 }
                 return `
                 <div class="registration-item">
-                    <strong>Student:</strong> ${reg.student}<br>
-                    <strong>Subjects:</strong> ${Array.isArray(reg.subjects) ? reg.subjects.join(', ') : reg.subjects}<br>
-                    <strong>Time Slot:</strong> ${reg.time_slot}<br>
-                    <strong>Teacher:</strong> ${reg.teacher}<br>
-                    <strong>Submitted:</strong> ${reg.timestamp}<br>
-                    <strong>Status:</strong> <span style="color:${statusColor}">${reg.status}</span>
+                    <div class="registration-info">
+                        <p><span class="label">Student:</span> ${reg.student}</p>
+                        <p><span class="label">Subjects:</span> ${Array.isArray(reg.subjects) ? reg.subjects.join(', ') : reg.subjects}</p>
+                        <p><span class="label">Time Slot:</span> ${reg.time_slot}</p>
+                        <p><span class="label">Teacher:</span> ${reg.teacher}</p>
+                        <p><span class="label">Submitted:</span> ${reg.timestamp}</p>
+                        <p><span class="label">Status:</span> <span style="color:${statusColor}">${reg.status}</span></p>
+                    </div>
                     <div class="registration-actions">
-                        <button class="approve-btn" onclick="updateRegistrationStatus(${reg.id}, 'approved')" ${reg.status === 'approved' ? 'disabled' : ''}>Approve</button>
-                        <button class="reject-btn" onclick="updateRegistrationStatus(${reg.id}, 'rejected')" ${reg.status === 'rejected' ? 'disabled' : ''}>Reject</button>
+                        <button class="approve-btn" onclick="updateRegistrationStatus(${reg.id}, 'approved')" ${reg.status === 'approved' ? 'disabled' : ''}>
+                            <span>✓</span> Approve
+                        </button>
+                        <button class="reject-btn" onclick="updateRegistrationStatus(${reg.id}, 'rejected')" ${reg.status === 'rejected' ? 'disabled' : ''}>
+                            <span>✕</span> Reject
+                        </button>
                     </div>
                 </div>
                 `;

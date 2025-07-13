@@ -84,9 +84,12 @@ body {
 
 label {
     display: block;
-    margin-bottom: 8px;
-    font-weight: 600;
-    color: #333;
+    margin-bottom: 10px;
+    font-weight: 500;
+    color: #a5b4fc;
+    font-size: 0.95em;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
 }
 
 input, select {
@@ -232,6 +235,17 @@ select option {
     font-size: 12px;
 }
 
+.step h2 {
+    margin-bottom: 25px;
+    font-size: 1.8em;
+    background: linear-gradient(45deg, #4c6ef5, #7c3aed);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: 0.5px;
+    text-shadow: 0 2px 10px rgba(76, 110, 245, 0.2);
+}
+
 .status {
     padding: 15px;
     border-radius: 10px;
@@ -250,69 +264,218 @@ select option {
     background: #fff3cd;
     color: #856404;
     border: 1px solid #ffeaa7;
+    border-color: rgba(255, 193, 7, 0.3);
+    background: rgba(255, 193, 7, 0.1);
+}
+
+.status p {
+    color: #e1e1ff;
+    line-height: 1.6;
+    font-size: 0.95em;
+    margin-bottom: 10px;
+}
+
+.status p:last-child {
+    margin-bottom: 0;
+    opacity: 0.8;
+}
+
+#adminMode {
+    display: none;
+    width: 100%;
+    background: rgba(20, 21, 35, 0.95);
+    border-radius: 20px;
+    padding: 30px;
+    margin-top: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(76, 110, 245, 0.2);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+#adminMode.hidden {
+    transform: translateX(100%);
 }
 
 .admin-panel {
-    background: #f8f9fa;
-    border-radius: 10px;
-    padding: 20px;
-    margin-top: 20px;
+    background: rgba(30, 32, 50, 0.5);
+    border-radius: 15px;
+    padding: 30px;
+    margin-top: 25px;
+    border: 1px solid rgba(76, 110, 245, 0.15);
+}
+
+#adminMode h2 {
+    font-size: 2.2em;
+    margin-bottom: 25px;
+    background: linear-gradient(45deg, #4c6ef5, #7c3aed);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-align: center;
+    letter-spacing: 0.5px;
+    text-shadow: 0 2px 10px rgba(76, 110, 245, 0.2);
+}
+
+.admin-panel h3 {
+    color: #a5b4fc;
+    font-size: 1.3em;
+    margin-bottom: 20px;
+    letter-spacing: 0.5px;
+    font-weight: 600;
+    text-align: center;
 }
 
 .registration-item {
-    background: white;
-    padding: 15px;
-    margin-bottom: 15px;
-    border-radius: 8px;
-    border-left: 4px solid #667eea;
+    background: rgba(40, 42, 65, 0.6);
+    padding: 25px;
+    margin-bottom: 25px;
+    border-radius: 15px;
+    border: 1px solid rgba(76, 110, 245, 0.2);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    font-size: 1.05em;
+    line-height: 1.6;
+}
+
+.registration-item:hover {
+    transform: translateY(-2px);
+    background: rgba(40, 42, 65, 0.8);
+    border-color: rgba(76, 110, 245, 0.4);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.registration-item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background: linear-gradient(180deg, #4c6ef5, #7c3aed);
+    border-radius: 4px 0 0 4px;
+}
+
+.registration-item h4 {
+    color: #e1e1ff;
+    font-size: 1.1em;
+    margin-bottom: 10px;
+}
+
+.registration-item p {
+    color: #a5b4fc;
+    font-size: 0.95em;
+    margin: 5px 0;
+    line-height: 1.4;
 }
 
 .registration-actions {
     display: flex;
-    gap: 10px;
-    margin-top: 10px;
+    gap: 12px;
+    margin-top: 15px;
+}
+
+.approve-btn, .reject-btn {
+    padding: 8px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.9em;
+    transition: all 0.3s ease;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
 }
 
 .approve-btn {
-    background: #28a745;
-    color: white;
-    border: none;
-    padding: 8px 15px;
-    border-radius: 5px;
-    cursor: pointer;
+    background: rgba(40, 167, 69, 0.2);
+    color: #2ecc71;
+    border: 1px solid rgba(46, 204, 113, 0.3);
+}
+
+.approve-btn:hover {
+    background: rgba(40, 167, 69, 0.3);
+    transform: translateY(-2px);
 }
 
 .reject-btn {
-    background: #dc3545;
-    color: white;
-    border: none;
-    padding: 8px 15px;
-    border-radius: 5px;
-    cursor: pointer;
+    background: rgba(220, 53, 69, 0.2);
+    color: #ff6b6b;
+    border: 1px solid rgba(255, 107, 107, 0.3);
+}
+
+.reject-btn:hover {
+    background: rgba(220, 53, 69, 0.3);
+    transform: translateY(-2px);
 }
 
 .toggle-btn {
-    background: rgba(76, 110, 245, 0.1);
+    position: relative;
+    width: auto;
+    margin: 0 0 30px auto;
+    display: block;
+    background: rgba(76, 110, 245, 0.15);
     color: #4c6ef5;
     border: 2px solid rgba(76, 110, 245, 0.2);
-    padding: 10px 20px;
-    border-radius: 8px;
+    padding: 12px 25px;
+    border-radius: 12px;
     cursor: pointer;
-    margin-bottom: 20px;
-    transition: all 0.3s ease;
     font-weight: 600;
-    backdrop-filter: blur(5px);
+    font-size: 0.95em;
+    letter-spacing: 0.5px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    backdrop-filter: blur(10px);
+    color: #4c6ef5;
+    border: 2px solid rgba(76, 110, 245, 0.3);
+    padding: 12px 25px;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    font-weight: 600;
+    backdrop-filter: blur(10px);
+    z-index: 1000;
+    font-size: 0.9em;
+    letter-spacing: 0.5px;
+    box-shadow: 0 4px 15px rgba(76, 110, 245, 0.2);
 }
 
 .toggle-btn:hover {
-    background: rgba(76, 110, 245, 0.2);
-    border-color: rgba(76, 110, 245, 0.4);
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(76, 110, 245, 0.2);
+    background: rgba(76, 110, 245, 0.25);
+    border-color: rgba(76, 110, 245, 0.5);
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 8px 25px rgba(76, 110, 245, 0.3);
 }
 
 .toggle-btn:active {
-    transform: translateY(0);
+    transform: translateY(0) scale(0.95);
+}
+
+.registration-info {
+    margin-bottom: 20px;
+}
+
+.registration-info p {
+    margin-bottom: 12px;
+    color: #e1e1ff;
+}
+
+.registration-info .label {
+    color: #a5b4fc;
+    font-weight: 600;
+    min-width: 100px;
+    display: inline-block;
+}
+
+/* Disabled button states */
+.approve-btn:disabled, .reject-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
 }
 
 @media (max-width: 600px) {
