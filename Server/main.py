@@ -104,14 +104,6 @@ if __name__ == '__main__':
     create_registration_table()
     app.run(debug=True, host='0.0.0.0', port=5000)
 
-@app.route('/register', methods=['POST'])
-def register():
-    data = request.get_json()
-    try:
-        insert_registration(data)
-        return jsonify({'success': True}), 201
-    except Exception as e:
-        return jsonify({'success': False, 'error': str(e)}), 500
 
 
 
