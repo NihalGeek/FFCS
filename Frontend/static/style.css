@@ -14,22 +14,37 @@
 
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #1a1c2e 0%, #2d1b3d 100%);
     min-height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
+    color: #e1e1ff;
 }
 
 .container {
-    background: rgba(255, 255, 255, 0.95);
+    background: rgba(30, 32, 50, 0.95);
     backdrop-filter: blur(10px);
     border-radius: 20px;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3),
+                0 0 20px rgba(103, 126, 234, 0.1);
     padding: 40px;
     width: 100%;
     max-width: 500px;
     margin: 20px;
+    border: 1px solid rgba(103, 126, 234, 0.2);
+    animation: fadeIn 0.5s ease-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .header {
@@ -38,18 +53,29 @@ body {
 }
 
 .header h1 {
-    color: #333;
     font-size: 2.5em;
     margin-bottom: 10px;
-    background: linear-gradient(45deg, #667eea, #764ba2);
+    background: linear-gradient(45deg, #4c6ef5, #7c3aed);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
+    text-shadow: 0 0 30px rgba(76, 110, 245, 0.3);
+    animation: glow 2s ease-in-out infinite alternate;
+}
+
+@keyframes glow {
+    from {
+        text-shadow: 0 0 5px rgba(76, 110, 245, 0.3);
+    }
+    to {
+        text-shadow: 0 0 20px rgba(76, 110, 245, 0.6);
+    }
 }
 
 .header p {
-    color: #666;
+    color: #a5b4fc;
     font-size: 1.1em;
+    letter-spacing: 1px;
 }
 
 .form-group {
@@ -66,47 +92,96 @@ label {
 input, select {
     width: 100%;
     padding: 15px;
-    border: 2px solid #e1e1e1;
+    border: 2px solid rgba(255, 255, 255, 0.1);
     border-radius: 10px;
     font-size: 16px;
     transition: all 0.3s ease;
-    background: white;
+    background: rgba(30, 32, 50, 0.8);
+    color: #e1e1ff;
 }
 
 input:focus, select:focus {
     outline: none;
-    border-color: #667eea;
-    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    border-color: #4c6ef5;
+    box-shadow: 0 0 0 3px rgba(76, 110, 245, 0.2);
+    background: rgba(30, 32, 50, 0.95);
+}
+
+input::placeholder, select::placeholder {
+    color: rgba(225, 225, 255, 0.5);
+}
+
+select option {
+    background: #1e2032;
+    color: #e1e1ff;
 }
 
 .btn {
     width: 100%;
     padding: 15px;
-    background: linear-gradient(45deg, #667eea, #764ba2);
+    background: linear-gradient(45deg, #4c6ef5, #7c3aed);
     color: white;
     border: none;
     border-radius: 10px;
     font-size: 18px;
     font-weight: 600;
     cursor: pointer;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.btn:before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: width 0.6s ease, height 0.6s ease;
 }
 
 .btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(76, 110, 245, 0.4),
+                0 0 20px rgba(124, 58, 237, 0.2);
+}
+
+.btn:hover:before {
+    width: 300px;
+    height: 300px;
 }
 
 .btn:active {
-    transform: translateY(0);
+    transform: translateY(1px);
 }
 
 .step {
     display: none;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
 }
 
 .step.active {
     display: block;
+    opacity: 1;
+    transform: translateY(0);
+    animation: slideIn 0.5s ease-out;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .progress-bar {
@@ -217,13 +292,27 @@ input:focus, select:focus {
 }
 
 .toggle-btn {
-    background: #6c757d;
-    color: white;
-    border: none;
+    background: rgba(76, 110, 245, 0.1);
+    color: #4c6ef5;
+    border: 2px solid rgba(76, 110, 245, 0.2);
     padding: 10px 20px;
-    border-radius: 5px;
+    border-radius: 8px;
     cursor: pointer;
     margin-bottom: 20px;
+    transition: all 0.3s ease;
+    font-weight: 600;
+    backdrop-filter: blur(5px);
+}
+
+.toggle-btn:hover {
+    background: rgba(76, 110, 245, 0.2);
+    border-color: rgba(76, 110, 245, 0.4);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(76, 110, 245, 0.2);
+}
+
+.toggle-btn:active {
+    transform: translateY(0);
 }
 
 @media (max-width: 600px) {
