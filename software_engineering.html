@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FFCS Registration System</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            width: 100%;
+            max-width: 500px;
+            margin: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            color: #333;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header p {
+            color: #666;
+            font-size: 1.1em;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e1e1e1;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .step {
+            display: none;
+        }
+
+        .step.active {
+            display: block;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: #e1e1e1;
+            border-radius: 3px;
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            transition: width 0.3s ease;
+            border-radius: 3px;
+        }
+
+        .selected-courses {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 15px;
+        }
+
+        .course-item {
+            background: white;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .course-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .remove-btn {
+            background: #ff4757;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .status {
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .status.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .status.pending {
+            background: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeaa7;
+        }
+
+        .admin-panel {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .registration-item {
+            background: white;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+        }
+
+        .registration-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .approve-btn {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .reject-btn {
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .toggle-btn {
+            background: #6c757d;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px;
+                margin: 10px;
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>FFCS</h1>
+            <p>Fully Flexible Credit System</p>
+        </div>
+
+        <button class="toggle-btn" onclick="toggleMode()">Switch to Admin Mode</button>
+
+        <!-- Student Registration Flow -->
+        <div id="studentMode">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+
+            <!-- Step 1: Login -->
+            <div class="step active" id="step1">
+                <h2>Student Login</h2>
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" placeholder="Enter your username" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" placeholder="Enter your password" required>
+                </div>
+                <button class="btn" onclick="login()">Login</button>
+            </div>
+
+            <!-- Step 2: Choose Subject -->
+            <div class="step" id="step2">
+                <h2>Select Subjects</h2>
+                <div class="form-group">
+                    <label for="subject">Available Subjects</label>
+                    <select id="subject">
+                        <option value="">Select a subject</option>
+                        <option value="Computer Science">Computer Science</option>
+                        <option value="Mathematics">Mathematics</option>
+                        <option value="Physics">Physics</option>
+                        <option value="Chemistry">Chemistry</option>
+                        <option value="Biology">Biology</option>
+                        <option value="English">English</option>
+                        <option value="History">History</option>
+                        <option value="Economics">Economics</option>
+                    </select>
+                </div>
+                <button class="btn" onclick="addSubject()">Add Subject</button>
+                <div class="selected-courses" id="selectedCourses" style="display: none;">
+                    <h3>Selected Subjects:</h3>
+                    <div id="courseList"></div>
+                </div>
+                <button class="btn" onclick="nextStep(3)" style="margin-top: 15px;">Continue to Time Selection</button>
+            </div>
+
+            <!-- Step 3: Choose Time -->
+            <div class="step" id="step3">
+                <h2>Select Time Slots</h2>
+                <div class="form-group">
+                    <label for="timeSlot">Available Time Slots</label>
+                    <select id="timeSlot">
+                        <option value="">Select a time slot</option>
+                        <option value="8:30 AM - 10:00 AM">8:30 AM - 10:00 AM</option>
+                        <option value="10:05 AM - 11:35 AM">10:05 AM - 11:35 AM</option>
+                        <option value="11:40 AM - 1:10 PM">11:40 AM - 1:10 PM</option>
+                        <option value="1:15 PM - 2:45 PM">1:15 PM - 2:45 PM</option>
+                        <option value="2:50 PM - 4:20 PM">2:50 PM - 4:20 PM</option>
+                        <option value="4:25 PM - 5:55 PM">4:25 PM - 5:55 PM</option>
+                        <option value="6:00 PM - 7:30 PM">6:00 PM - 7:30 PM</option>
+                    </select>
+                </div>
+                <button class="btn" onclick="nextStep(4)">Continue to Teacher Selection</button>
+            </div>
+
+            <!-- Step 4: Choose Teacher -->
+            <div class="step" id="step4">
+                <h2>Select Teachers</h2>
+                <div class="form-group">
+                    <label for="teacher">Available Teachers</label>
+                    <select id="teacher">
+                        <option value="">Select a teacher</option>
+                        <option value="Dr. Smith">Dr. Smith</option>
+                        <option value="Prof. Johnson">Prof. Johnson</option>
+                        <option value="Dr. Williams">Dr. Williams</option>
+                        <option value="Prof. Brown">Prof. Brown</option>
+                        <option value="Dr. Davis">Dr. Davis</option>
+                    </select>
+                </div>
+                <button class="btn" onclick="submitRegistration()">Submit Registration</button>
+            </div>
+
+            <!-- Step 5: Confirmation -->
+            <div class="step" id="step5">
+                <h2>Registration Submitted</h2>
+                <div class="status pending">
+                    <p>Your registration has been submitted and is pending admin approval.</p>
+                    <p>You will be notified once your registration is processed.</p>
+                </div>
+                <button class="btn" onclick="resetForm()">Register for Another Course</button>
+            </div>
+        </div>
+
+        <!-- Admin Panel -->
+        <div id="adminMode" style="display: none;">
+            <h2>Admin Panel</h2>
+            <div class="admin-panel">
+                <h3>Pending Registrations</h3>
+                <div id="pendingRegistrations">
+                    <!-- Pending registrations will be displayed here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentStep = 1;
+        let selectedCourses = [];
+        let isAdminMode = false;
+        let pendingRegistrations = [];
+
+        function updateProgress() {
+            const progress = ((currentStep - 1) / 4) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+        }
+
+        function showStep(step) {
+            document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+            document.getElementById(`step${step}`).classList.add('active');
+            currentStep = step;
+            updateProgress();
+        }
+
+        function login() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            if (username && password) {
+                // Simulate credential validation
+                showStep(2);
+            } else {
+                alert('Please enter both username and password');
+            }
+        }
+
+        function addSubject() {
+            const subject = document.getElementById('subject').value;
+            if (subject && !selectedCourses.includes(subject)) {
+                selectedCourses.push(subject);
+                updateSelectedCourses();
+                document.getElementById('subject').value = '';
+            }
+        }
+
+        function updateSelectedCourses() {
+            const courseList = document.getElementById('courseList');
+            const selectedCoursesDiv = document.getElementById('selectedCourses');
+            
+            if (selectedCourses.length > 0) {
+                selectedCoursesDiv.style.display = 'block';
+                courseList.innerHTML = selectedCourses.map(course => `
+                    <div class="course-item">
+                        <span>${course}</span>
+                        <button class="remove-btn" onclick="removeCourse('${course}')">Remove</button>
+                    </div>
+                `).join('');
+            } else {
+                selectedCoursesDiv.style.display = 'none';
+            }
+        }
+
+        function removeCourse(course) {
+            selectedCourses = selectedCourses.filter(c => c !== course);
+            updateSelectedCourses();
+        }
+
+        function nextStep(step) {
+            if (step === 3 && selectedCourses.length === 0) {
+                alert('Please select at least one subject');
+                return;
+            }
+            if (step === 4 && !document.getElementById('timeSlot').value) {
+                alert('Please select a time slot');
+                return;
+            }
+            showStep(step);
+        }
+
+        function submitRegistration() {
+            const teacher = document.getElementById('teacher').value;
+            const timeSlot = document.getElementById('timeSlot').value;
+            
+            if (!teacher) {
+                alert('Please select a teacher');
+                return;
+            }
+
+            // Create registration object
+            const registration = {
+                id: Date.now(),
+                student: document.getElementById('username').value,
+                subjects: [...selectedCourses],
+                timeSlot: timeSlot,
+                teacher: teacher,
+                status: 'pending',
+                timestamp: new Date().toLocaleString()
+            };
+
+            // Add to pending registrations
+            pendingRegistrations.push(registration);
+            
+            showStep(5);
+        }
+
+        function resetForm() {
+            currentStep = 1;
+            selectedCourses = [];
+            document.getElementById('username').value = '';
+            document.getElementById('password').value = '';
+            document.getElementById('subject').value = '';
+            document.getElementById('timeSlot').value = '';
+            document.getElementById('teacher').value = '';
+            updateSelectedCourses();
+            showStep(1);
+        }
+
+        function toggleMode() {
+            isAdminMode = !isAdminMode;
+            const studentMode = document.getElementById('studentMode');
+            const adminMode = document.getElementById('adminMode');
+            const toggleBtn = document.querySelector('.toggle-btn');
+            
+            if (isAdminMode) {
+                studentMode.style.display = 'none';
+                adminMode.style.display = 'block';
+                toggleBtn.textContent = 'Switch to Student Mode';
+                loadPendingRegistrations();
+            } else {
+                studentMode.style.display = 'block';
+                adminMode.style.display = 'none';
+                toggleBtn.textContent = 'Switch to Admin Mode';
+            }
+        }
+
+        function loadPendingRegistrations() {
+            const container = document.getElementById('pendingRegistrations');
+            
+            if (pendingRegistrations.length === 0) {
+                container.innerHTML = '<p>No pending registrations</p>';
+                return;
+            }
+
+            container.innerHTML = pendingRegistrations.map(reg => `
+                <div class="registration-item">
+                    <strong>Student:</strong> ${reg.student}<br>
+                    <strong>Subjects:</strong> ${reg.subjects.join(', ')}<br>
+                    <strong>Time Slot:</strong> ${reg.timeSlot}<br>
+                    <strong>Teacher:</strong> ${reg.teacher}<br>
+                    <strong>Submitted:</strong> ${reg.timestamp}<br>
+                    <strong>Status:</strong> ${reg.status}
+                    <div class="registration-actions">
+                        <button class="approve-btn" onclick="approveRegistration(${reg.id})">Approve</button>
+                        <button class="reject-btn" onclick="rejectRegistration(${reg.id})">Reject</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function approveRegistration(id) {
+            const reg = pendingRegistrations.find(r => r.id === id);
+            if (reg) {
+                reg.status = 'approved';
+                alert(`Registration for ${reg.student} has been approved`);
+                loadPendingRegistrations();
+            }
+        }
+
+        function rejectRegistration(id) {
+            const reg = pendingRegistrations.find(r => r.id === id);
+            if (reg) {
+                reg.status = 'rejected';
+                alert(`Registration for ${reg.student} has been rejected`);
+                loadPendingRegistrations();
+            }
+        }
+
+        // Initialize
+        updateProgress();
+    </script>
+</body>
+</html>
